@@ -2,19 +2,15 @@ import client from "../config/modbusConfig.js";
 
 const dataAddress = 
     {
-        addressLamp1:50,
-        addressLamp2:51,
-        addressLamp3:52,
-        addressLamp4:53,
-        addressLamp5:54,
-        addressLamp6:55,
-        addressLamp7:56,
-        addressLamp8:57,
-        addressLamp9:58,
+        button_1: 0,
+        lamp_1: 3,
+        button_2: 4,
+        lamp_2: 7
     }
 
 export const readSensor = async (req, res) => {
     try {
+        client.connect();
         const data = await client.readHoldingRegisters(
            dataAddress.addressLamp1,
            1,

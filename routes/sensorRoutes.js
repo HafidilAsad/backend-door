@@ -5,8 +5,6 @@ import { dataAddressPlc } from "../controllers/constant.js";
 
 const router = express.Router();
 
-const registerValueOn = 1;
-const registerValueOff = 0;
 
 router.get("/readSensor", readSensor);
 router.get("/getAllstatus", async (req, res) => {

@@ -71,10 +71,40 @@ async function getAllStatus() {
             arus,
             kwh
         };
-        
+
     } catch (error) {
         console.log("error get all status", error);
     }
+}
+
+async function getDataSensor(){
+    try {
+        const registersResponse = await Promise.all([
+            client.readHoldingRegisters(dataAddressPlc.suhu, 1),
+            client.readHoldingRegisters(dataAddressPlc.kelembaban, 1),
+            client.readHoldingRegisters(dataAddressPlc.voltage, 1),
+            client.readHoldingRegisters(dataAddressPlc.arus, 1),
+            client.readHoldingRegisters(dataAddressPlc.kwh, 1),
+        ]);
+        
+        const suhu = registersResponse[0].data[0];
+        const kelembaban = registersResponse[1].data[0];
+        const voltage = registersResponse[2].data[0];
+        const arus = registersResponse[3].data[0];
+        const kwh = registersResponse[4].data[0];
+
+        return {
+            suhu,
+            kelembaban,
+            voltage,
+            arus,
+            kwh
+        };
+        
+    } catch (error) {
+        console.log("error get sensor status", error);
+    }
+
 }
 
 
@@ -139,4 +169,4 @@ export const writeData = async (req, res) => {
     }
 }
 
-export { getAllStatus, writeDataCoil };
+export { getAllStatus, writeDataCoil , getDataSensor};

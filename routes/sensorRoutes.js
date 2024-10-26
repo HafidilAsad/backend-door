@@ -1,6 +1,6 @@
 import express from "express";
 import { readSensor } from "../controllers/sensorController.js";
-import { getAllStatus, writeDataCoil , getDataSensor} from "../controllers/sensorController.js";
+import { getAllStatus, writeDataCoil , getDataSensor, getSwitchStatus} from "../controllers/sensorController.js";
 import { dataAddressPlc } from "../controllers/constant.js";
 
 const router = express.Router();
@@ -19,6 +19,15 @@ router.get("/getAllstatus", async (req, res) => {
 router.get("/getDataSensor", async (req, res) => {
     try {
         const dataResponse = await getDataSensor();
+        res.status(200).json(dataResponse);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.get("/getSwitchStatus", async (req, res) => {
+    try {
+        const dataResponse = await getSwitchStatus();
         res.status(200).json(dataResponse);
     } catch (error) {
         res.status(500).json({ error: error.message });

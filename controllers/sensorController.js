@@ -86,7 +86,7 @@ async function getDataSensor(){
             client.readHoldingRegisters(dataAddressPlc.arus, 1),
             client.readHoldingRegisters(dataAddressPlc.kwh, 1),
         ]);
-        
+
         const suhu = registersResponse[0].data[0];
         const kelembaban = registersResponse[1].data[0];
         const voltage = registersResponse[2].data[0];
@@ -105,6 +105,48 @@ async function getDataSensor(){
         console.log("error get sensor status", error);
     }
 
+}
+
+async function getSwitchStatus(){
+    try {
+        const buttonsAndLampsResponse = await Promise.all([
+            client.readCoils(dataAddressPlc.button_1, 2), 
+            client.readCoils(dataAddressPlc.button_2, 2),
+            client.readCoils(dataAddressPlc.button_3, 2),
+            client.readCoils(dataAddressPlc.button_4, 2),
+            client.readCoils(dataAddressPlc.button_door_1, 2), 
+            client.readCoils(dataAddressPlc.button_door_2, 2), 
+        ]);
+
+        const [button1Response, button2Response , button3Response, button4Response, buttonDoor1Response, buttonDoor2Response] = buttonsAndLampsResponse;
+        const button_1 = button1Response.data[0] ? 1 : 0;
+        const lamp_1 = button1Response.data[1] ? 1 : 0;
+        const button_2 = button2Response.data[0] ? 1 : 0;
+        const button_3 = button3Response.data[0] ? 1 : 0;
+        const button_4 = button4Response.data[0] ? 1 : 0;
+        const lamp_2 = button2Response.data[1] ? 1 : 0;
+        const button_door_1 = buttonDoor1Response.data[0] ? 1 : 0;
+        const status_door_1 = buttonDoor1Response.data[1] ? 1 : 0;
+        const button_door_2 = buttonDoor2Response.data[0] ? 1 : 0;
+        const status_door_2 = buttonDoor2Response.data[1] ? 1 : 0;
+
+        return {
+            button_1,
+            lamp_1,
+            button_2,
+            button_3,
+            button_4,
+            lamp_2,
+            button_door_1,
+            status_door_1,
+            button_door_2,
+            status_door_2
+        }
+        
+    } catch (error) {
+        console.log("error get switch status", error);
+        
+    }
 }
 
 
@@ -169,4 +211,4 @@ export const writeData = async (req, res) => {
     }
 }
 
-export { getAllStatus, writeDataCoil , getDataSensor};
+export { getAllStatus, writeDataCoil , getDataSensor , getSwitchStatus};

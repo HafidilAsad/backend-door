@@ -5,13 +5,13 @@ export const dataAddressPlc = {
     lamp_2: 7,
     button_3: 2,
     button_4: 3,
-    button_door_1: 8,
+    button_door_1: 5,
     status_door_1: 11,
-    button_door_2: 12,
+    button_door_2: 6,
     status_door_2: 15,
     suhu: 0,
-    kelembaban: 1,
-    voltage: 2,
-    arus: 3,
-    kwh: 4
+    kelembaban: 2,
+    voltage: 4,
+    arus: 6,
+    kwh: 8
 }

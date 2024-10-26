@@ -41,18 +41,33 @@ async function getAllStatus() {
 
        
         const registersResponse = await Promise.all([
-            client.readHoldingRegisters(dataAddressPlc.suhu, 1),
-            client.readHoldingRegisters(dataAddressPlc.kelembaban, 1),
-            client.readHoldingRegisters(dataAddressPlc.voltage, 1),
-            client.readHoldingRegisters(dataAddressPlc.arus, 1),
-            client.readHoldingRegisters(dataAddressPlc.kwh, 1),
+            client.readHoldingRegisters(dataAddressPlc.suhu, 2),
+            client.readHoldingRegisters(dataAddressPlc.kelembaban, 2),
+            client.readHoldingRegisters(dataAddressPlc.voltage, 2),
+            client.readHoldingRegisters(dataAddressPlc.arus, 2),
+            client.readHoldingRegisters(dataAddressPlc.kwh, 2),
         ]);
 
-        const suhu = registersResponse[0].data[0];
-        const kelembaban = registersResponse[1].data[0];
-        const voltage = registersResponse[2].data[0];
-        const arus = registersResponse[3].data[0];
-        const kwh = registersResponse[4].data[0];
+      
+        
+        const toFloat = (data, littleEndian = false) => {
+            const buffer = Buffer.alloc(4);
+            if (littleEndian) {
+                buffer.writeUInt16LE(data[0], 0); 
+                buffer.writeUInt16LE(data[1], 2);
+            } else {
+                buffer.writeUInt16BE(data[0], 0); 
+                buffer.writeUInt16BE(data[1], 2);
+            }
+            return buffer.readFloatLE(0); 
+        };
+
+       
+        const suhu = toFloat(registersResponse[0].data, true);
+        const kelembaban = toFloat(registersResponse[1].data, true);
+        const voltage = toFloat(registersResponse[2].data, true);
+        const arus = toFloat(registersResponse[3].data, true);
+        const kwh = toFloat(registersResponse[4].data, true);
 
         return {
             button_1,
@@ -77,21 +92,36 @@ async function getAllStatus() {
     }
 }
 
-async function getDataSensor(){
+async function getDataSensor() {
     try {
         const registersResponse = await Promise.all([
-            client.readHoldingRegisters(dataAddressPlc.suhu, 1),
-            client.readHoldingRegisters(dataAddressPlc.kelembaban, 1),
-            client.readHoldingRegisters(dataAddressPlc.voltage, 1),
-            client.readHoldingRegisters(dataAddressPlc.arus, 1),
-            client.readHoldingRegisters(dataAddressPlc.kwh, 1),
+            client.readHoldingRegisters(dataAddressPlc.suhu, 2),
+            client.readHoldingRegisters(dataAddressPlc.kelembaban, 2),
+            client.readHoldingRegisters(dataAddressPlc.voltage, 2),
+            client.readHoldingRegisters(dataAddressPlc.arus, 2),
+            client.readHoldingRegisters(dataAddressPlc.kwh, 2),
         ]);
 
-        const suhu = registersResponse[0].data[0];
-        const kelembaban = registersResponse[1].data[0];
-        const voltage = registersResponse[2].data[0];
-        const arus = registersResponse[3].data[0];
-        const kwh = registersResponse[4].data[0];
+      
+        
+        const toFloat = (data, littleEndian = false) => {
+            const buffer = Buffer.alloc(4);
+            if (littleEndian) {
+                buffer.writeUInt16LE(data[0], 0); // Little-endian
+                buffer.writeUInt16LE(data[1], 2);
+            } else {
+                buffer.writeUInt16BE(data[0], 0); // Big-endian
+                buffer.writeUInt16BE(data[1], 2);
+            }
+            return buffer.readFloatLE(0); // Change to readFloatBE if big-endian
+        };
+
+        // You may need to adjust 'littleEndian' based on your device documentation
+        const suhu = toFloat(registersResponse[0].data, true);
+        const kelembaban = toFloat(registersResponse[1].data, true);
+        const voltage = toFloat(registersResponse[2].data, true);
+        const arus = toFloat(registersResponse[3].data, true);
+        const kwh = toFloat(registersResponse[4].data, true);
 
         return {
             suhu,
@@ -104,8 +134,10 @@ async function getDataSensor(){
     } catch (error) {
         console.log("error get sensor status", error);
     }
-
 }
+
+
+
 
 async function getSwitchStatus(){
     try {

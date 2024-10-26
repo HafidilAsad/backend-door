@@ -9,6 +9,7 @@ dotenv.config();
 client.connectTCP(process.env.MODBUS_HOST, { port: process.env.MODBUS_PORT }, (err) => {
     if (err) {
         console.log("Can't connect to PLC", err);
+        process.exit(1);
     } else {
         console.log("PLC connected");           
     }

@@ -5,7 +5,7 @@ export const dataAddressPlc = {
     lamp_2: 7,
     button_3: 2,
     button_4: 3,
-    button_door_1: 5,
+    button_door_1: 4,
     status_door_1: 11,
     button_door_2: 6,
     status_door_2: 15,

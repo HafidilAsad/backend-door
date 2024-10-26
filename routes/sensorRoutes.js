@@ -29,5 +29,4 @@ router.post("/control/:button/:value", async (req, res) => {
     }
 });
 
-
 export default router;

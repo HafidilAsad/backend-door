@@ -138,8 +138,6 @@ async function getDataSensor() {
 }
 
 
-
-
 async function getSwitchStatus(){
     try {
         const buttonsAndLampsResponse = await Promise.all([

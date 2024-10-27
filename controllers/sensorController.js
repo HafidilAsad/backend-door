@@ -90,6 +90,7 @@ async function getAllStatus() {
 
     } catch (error) {
         console.log("error get all status", error);
+        process.exit(1);
     }
 }
 

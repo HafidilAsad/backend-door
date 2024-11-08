@@ -47,6 +47,7 @@ async function getAllStatus() {
             client.readHoldingRegisters(dataAddressPlc.voltage, 2),
             client.readHoldingRegisters(dataAddressPlc.arus, 2),
             client.readHoldingRegisters(dataAddressPlc.kwh, 2),
+            client.readHoldingRegisters(dataAddressPlc.frquensi, 2),
         ]);
 
       
@@ -69,6 +70,7 @@ async function getAllStatus() {
         const voltage = toFloat(registersResponse[2].data, true);
         const arus = toFloat(registersResponse[3].data, true);
         const kwh = toFloat(registersResponse[4].data, true);
+        const frquensi = toFloat(registersResponse[5].data, true);
 
         return {
             button_1,
@@ -85,7 +87,8 @@ async function getAllStatus() {
             kelembaban,
             voltage,
             arus,
-            kwh
+            kwh,
+            frquensi
         };
 
     } catch (error) {
@@ -102,6 +105,9 @@ async function getDataSensor() {
             client.readHoldingRegisters(dataAddressPlc.voltage, 2),
             client.readHoldingRegisters(dataAddressPlc.arus, 2),
             client.readHoldingRegisters(dataAddressPlc.kwh, 2),
+            client.readHoldingRegisters(dataAddressPlc.frquensi, 2),
+
+
         ]);
 
       
@@ -124,13 +130,15 @@ async function getDataSensor() {
         const voltage = toFloat(registersResponse[2].data, true);
         const arus = toFloat(registersResponse[3].data, true);
         const kwh = toFloat(registersResponse[4].data, true);
+        const frquensi = toFloat(registersResponse[5].data, true);
 
         return {
             suhu,
             kelembaban,
             voltage,
             arus,
-            kwh
+            kwh,
+            frquensi
         };
         
     } catch (error) {

@@ -11,7 +11,8 @@ export const dataAddressPlc = {
     status_door_2: 15,
     suhu: 0,
     kelembaban: 2,
-    voltage: 4,
-    arus: 6,
-    kwh: 8
+    voltage: 200,
+    arus: 206,
+    kwh: 212,
+    frquensi:216,
 }

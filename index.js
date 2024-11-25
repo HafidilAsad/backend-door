@@ -3,6 +3,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import sensorRoutes from "./routes/sensorRoutes.js";
 import Modbus from "modbus-serial";
+import bodyParser from "body-parser";
+import sessiionMiddleware from "./midleware/sessionMiddlewere.js";
+import VisitorController from "./controllers/visitorController.js";
+import sequelize from "./config/sequelize.js";
 
 dotenv.config();
 
@@ -21,6 +25,15 @@ app.get("/api/test", (req, res) => {
 });
 
 app.use("/api", sensorRoutes);
+// Middleware
+app.use(bodyParser.json());
+app.use(sessiionMiddleware);
+
+// Sync database and start server
+sequelize
+  .sync({ alter: true }) // Avoid in production; use migrations instead
+  .then(() => console.log("Database synced"))
+  .catch((error) => console.error("Database sync error:", error));
 
 
 

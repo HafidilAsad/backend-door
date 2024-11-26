@@ -1,6 +1,7 @@
 import Modbus from "modbus-serial";
 import { dataAddressPlc } from "../controllers/constant.js";
 import dotenv from "dotenv";
+import { log, errorLogger } from "../utils/logger.js";
 
 const client = new Modbus();
 dotenv.config();
@@ -8,10 +9,10 @@ dotenv.config();
 
 client.connectTCP(process.env.MODBUS_HOST, { port: process.env.MODBUS_PORT }, (err) => {
     if (err) {
-        console.log("Can't connect to PLC", err);
+        errorLogger("Can't connect to PLC", err);
         process.exit(1);
     } else {
-        console.log("PLC connected");           
+        log("PLC connected");           
     }
 });
 

@@ -6,8 +6,9 @@ import Modbus from "modbus-serial";
 import bodyParser from "body-parser";
 import sessiionMiddleware from "./midleware/sessionMiddlewere.js";
 import visitorRoute from "./routes/visitorRoute.js";
-import sequelize from "./config/sequelize.js";
 import {log, errorLogger} from "./utils/logger.js";
+import lampuRoutes from "./routes/lampuRoutes.js";
+import jadwalLampuRoutes from "./routes/jadwalLampuRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,10 @@ app.get("/api/test", (req, res) => {
     res.send("SERVER UP!");
 });
 
+app.use('/api/lampu', lampuRoutes);
+app.use('/api/jadwalLampu', jadwalLampuRoutes);
+
+
 app.use("/api", sensorRoutes);
 app.use("/api", visitorRoute);
 
@@ -32,11 +37,6 @@ app.use("/api", visitorRoute);
 app.use(bodyParser.json());
 app.use(sessiionMiddleware);
 
-// Sync database and start server
-sequelize
-  .sync({ alter: true }) // Avoid in production; use migrations instead
-  .then(() => log("Database synced"))
-  .catch((error) => errorLogger("Database sync error:", error));
 
 
 

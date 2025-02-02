@@ -2,12 +2,12 @@ import dotenv from 'dotenv';
 dotenv.config(); // Ensure environment variables are loaded
 
 import { Sequelize, DataTypes } from 'sequelize';
-import config from '../config/config.js';  // Use import instead of require
+import config from '../config/config.js'; 
 import lampuModel from './lampu.js';
 import jadwalLampuModel from './jadwalLampu.js';
 
 const env = process.env.NODE_ENV || 'development';
-const configEnv = config[env];  // Get the configuration for the current environment
+const configEnv = config[env];  
 
 const sequelize = new Sequelize(configEnv);
 

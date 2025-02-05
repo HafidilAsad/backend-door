@@ -2,19 +2,18 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import sensorRoutes from "./routes/sensorRoutes.js";
-import Modbus from "modbus-serial";
+import visitorRoute from "./routes/visitorRoute.js";
 import bodyParser from "body-parser";
 import sessiionMiddleware from "./midleware/sessionMiddlewere.js";
-import visitorRoute from "./routes/visitorRoute.js";
 import {log, errorLogger} from "./utils/logger.js";
 import lampuRoutes from "./routes/lampuRoutes.js";
 import jadwalLampuRoutes from "./routes/jadwalLampuRoutes.js";
+import cron from "node-cron";
+import axios from 'axios';
 
 dotenv.config();
 
 const app = express();
-
-const client = new Modbus();
 
 
 app.use(cors());
@@ -26,6 +25,8 @@ app.get("/api/test", (req, res) => {
     res.send("SERVER UP!");
 });
 
+
+
 app.use('/api/lampu', lampuRoutes);
 app.use('/api/jadwalLampu', jadwalLampuRoutes);
 
@@ -36,6 +37,34 @@ app.use("/api", visitorRoute);
 // Middleware
 app.use(bodyParser.json());
 app.use(sessiionMiddleware);
+
+
+// for cron job
+cron.schedule("00 7 * * *", async () => {
+    try {
+          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_1/1`);
+          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_2/1`);
+          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_3/1`);
+          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_4/1`);
+        log(`running turn on lampu `);
+    } catch (error) {
+        errorLogger(`failed turn on lampu , ${error}` );
+    }
+});
+
+
+cron.schedule("00 19 * * *", async () => {
+    try {
+        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_1/0`);
+        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_2/0`);
+        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_3/0`);
+        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_4/0`);
+        log(`running turn off lampu `);
+    } catch (error) {
+        errorLogger(`failed turn off lampu , ${error}` ); ;
+    }
+});
+
 
 
 

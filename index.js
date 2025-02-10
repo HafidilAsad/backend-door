@@ -1,13 +1,14 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import sensorRoutes from "./routes/sensorRoutes.js";
+// import sensorRoutes from "./routes/sensorRoutes.js";
 import visitorRoute from "./routes/visitorRoute.js";
 import bodyParser from "body-parser";
 import sessiionMiddleware from "./midleware/sessionMiddlewere.js";
 import {log, errorLogger} from "./utils/logger.js";
 import lampuRoutes from "./routes/lampuRoutes.js";
 import jadwalLampuRoutes from "./routes/jadwalLampuRoutes.js";
+import energyRoutes from "./routes/energyRoutes.js";
 import cron from "node-cron";
 import axios from 'axios';
 
@@ -29,9 +30,10 @@ app.get("/api/test", (req, res) => {
 
 app.use('/api/lampu', lampuRoutes);
 app.use('/api/jadwalLampu', jadwalLampuRoutes);
+app.use('/api', energyRoutes);
 
 
-app.use("/api", sensorRoutes);
+// app.use("/api", sensorRoutes);
 app.use("/api", visitorRoute);
 
 // Middleware
@@ -65,7 +67,22 @@ cron.schedule("00 19 * * *", async () => {
     }
 });
 
+cron.schedule("30 15 18 * * *", async () => {
+    try {
+        const response = await axios.get('https://solusiprogrammer.com/api/getallstatus');
+        const { kwh, suhu: temperature, kelembaban: humidity } = response.data;
 
+        await axios.post('https://solusiprogrammer.com/api/energy', {
+            kwh,
+            humidity,
+            temperature
+        });
+
+        log(`Energy data posted successfully`);
+    } catch (error) {
+        errorLogger(`Failed to post energy data, ${error}`);
+    }
+});
 
 app.listen(process.env.APP_PORT, () => {
     log(`Server listening on port ${process.env.APP_PORT}`);

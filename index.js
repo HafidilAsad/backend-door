@@ -40,7 +40,7 @@ app.use(sessiionMiddleware);
 
 
 // for cron job
-cron.schedule("00 7 * * *", async () => {
+cron.schedule("15 17 * * *", async () => {
     try {
           await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_1/1`);
           await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_2/1`);
@@ -64,8 +64,6 @@ cron.schedule("00 19 * * *", async () => {
         errorLogger(`failed turn off lampu , ${error}` ); ;
     }
 });
-
-
 
 
 

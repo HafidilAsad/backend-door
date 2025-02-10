@@ -67,7 +67,7 @@ cron.schedule("00 19 * * *", async () => {
     }
 });
 
-cron.schedule("30 20 18 * * *", async () => {
+cron.schedule("30 59 23 * * *", async () => {
     try {
         const response = await axios.get('https://solusiprogrammer.com/api/getallstatus');
         const { kwh, suhu: temperature, kelembaban: humidity } = response.data;

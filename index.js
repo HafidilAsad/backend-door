@@ -40,7 +40,7 @@ app.use(sessiionMiddleware);
 
 
 // for cron job
-cron.schedule("20 17 * * *", async () => {
+cron.schedule("00 07 * * *", async () => {
     try {
           await axios.post(`https://solusiprogrammer.com/api/control/button_1/1`);
           await axios.post(`https://solusiprogrammer.com/api/control/button_2/1`);

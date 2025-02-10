@@ -40,12 +40,12 @@ app.use(sessiionMiddleware);
 
 
 // for cron job
-cron.schedule("15 17 * * *", async () => {
+cron.schedule("20 17 * * *", async () => {
     try {
-          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_1/1`);
-          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_2/1`);
-          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_3/1`);
-          await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_4/1`);
+          await axios.post(`https://solusiprogrammer.com/api/control/button_1/1`);
+          await axios.post(`https://solusiprogrammer.com/api/control/button_2/1`);
+          await axios.post(`https://solusiprogrammer.com/api/control/button_3/1`);
+          await axios.post(`https://solusiprogrammer.com/api/control/button_4/1`);
         log(`running turn on lampu `);
     } catch (error) {
         errorLogger(`failed turn on lampu , ${error}` );
@@ -55,10 +55,10 @@ cron.schedule("15 17 * * *", async () => {
 
 cron.schedule("00 19 * * *", async () => {
     try {
-        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_1/0`);
-        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_2/0`);
-        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_3/0`);
-        await axios.post(`https://localhost:${process.env.APP_PORT}/api/control/button_4/0`);
+        await axios.post(`https://solusiprogrammer.com/api/control/button_1/0`);
+        await axios.post(`https://solusiprogrammer.com/api/control/button_2/0`);
+        await axios.post(`https://solusiprogrammer.com/api/control/button_3/0`);
+        await axios.post(`https://solusiprogrammer.com/api/control/button_4/0`);
         log(`running turn off lampu `);
     } catch (error) {
         errorLogger(`failed turn off lampu , ${error}` ); ;

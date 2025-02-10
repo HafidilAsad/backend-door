@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-// import sensorRoutes from "./routes/sensorRoutes.js";
+import sensorRoutes from "./routes/sensorRoutes.js";
 import visitorRoute from "./routes/visitorRoute.js";
 import bodyParser from "body-parser";
 import sessiionMiddleware from "./midleware/sessionMiddlewere.js";
@@ -33,7 +33,7 @@ app.use('/api/jadwalLampu', jadwalLampuRoutes);
 app.use('/api', energyRoutes);
 
 
-// app.use("/api", sensorRoutes);
+app.use("/api", sensorRoutes);
 app.use("/api", visitorRoute);
 
 // Middleware
@@ -67,7 +67,7 @@ cron.schedule("00 19 * * *", async () => {
     }
 });
 
-cron.schedule("30 15 18 * * *", async () => {
+cron.schedule("30 20 18 * * *", async () => {
     try {
         const response = await axios.get('https://solusiprogrammer.com/api/getallstatus');
         const { kwh, suhu: temperature, kelembaban: humidity } = response.data;
